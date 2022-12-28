@@ -12,7 +12,7 @@ var jsonParser = bodyParser.json()
 
 app.post('/meeting', jsonParser, (req, res, next) => {
   try {
-    fs.writeFile('meeting.json', JSON.stringify(req.body), (err) => {
+    fs.writeFile('/tmp/meeting.json', JSON.stringify(req.body), (err) => {
       if (err) next(err);
       res.json({ data: true })
     });
@@ -23,7 +23,7 @@ app.post('/meeting', jsonParser, (req, res, next) => {
 
 app.get('/meeting', async (req, res, next) => {
   try {
-    let data = fs.readFileSync('meeting.json');
+    let data = fs.readFileSync('/tmp/meeting.json');
     let meeting = JSON.parse(data);
     res.json({ data: meeting })
   } catch (error) {
