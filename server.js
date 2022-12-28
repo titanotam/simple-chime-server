@@ -17,8 +17,8 @@ app.post('/meeting', jsonParser, (req, res, next) => {
       res.json({ data: true })
     });
   } catch (error) {
-    res.json({ error: error.message })
-  }  
+    next(error);
+  }
 })
 
 app.get('/meeting', async (req, res, next) => {
@@ -27,7 +27,17 @@ app.get('/meeting', async (req, res, next) => {
     let meeting = JSON.parse(data);
     res.json({ data: meeting })
   } catch (error) {
-    res.json({ error: error.message })
+    next(error);
+  }
+})
+
+app.delete('/meeting', async (req, res, next) => {
+  try {
+    var filePath = '/tmp/meeting.json';
+    fs.unlinkSync(filePath);
+    res.json({ data: true })
+  } catch (error) {
+    next(error);
   }
 })
 
