@@ -11,10 +11,14 @@ app.use(cors())
 var jsonParser = bodyParser.json()
 
 app.post('/meeting', jsonParser, (req, res, next) => {
-  fs.writeFile('meeting.json', JSON.stringify(req.body), (err) => {
-    if (err) next(err);
-    res.json({ data: true })
-  });
+  try {
+    fs.writeFile('meeting.json', JSON.stringify(req.body), (err) => {
+      if (err) next(err);
+      res.json({ data: true })
+    });
+  } catch (error) {
+    res.json({ error: error.message })
+  }  
 })
 
 app.get('/meeting', async (req, res, next) => {
@@ -23,7 +27,7 @@ app.get('/meeting', async (req, res, next) => {
     let meeting = JSON.parse(data);
     res.json({ data: meeting })
   } catch (error) {
-    next(error)
+    res.json({ error: error.message })
   }
 })
 
