@@ -34,8 +34,12 @@ app.get('/meeting', async (req, res, next) => {
 app.delete('/meeting', async (req, res, next) => {
   try {
     var filePath = '/tmp/meeting.json';
-    fs.unlinkSync(filePath);
-    res.json({ data: true })
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      res.json({ data: true });
+      return;
+    }
+    res.json({ data: false })
   } catch (error) {
     next(error);
   }
